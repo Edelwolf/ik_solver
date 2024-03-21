@@ -1,9 +1,0 @@
-geometry_msg/Pose pose
-
-string[] joint_names
-float64[] limits_high
-float64[] limits_low
-
-IkPoseRequest[] requests
----
-JointState[] ik_joint_states

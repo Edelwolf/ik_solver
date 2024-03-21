@@ -5,7 +5,11 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/opt/ros/humble/include/**",
-                "${workspaceFolder}/../../install/**"
+                "${workspaceFolder}/../../install/**",
+                "${workspaceFolder}/ik_interfaces/msg/**",
+                "${workspaceFolder}/ik_interfaces/srv/**",
+                "/home/flehm/ros2_ws/install/**",
+                "/usr/include/eigen3"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
