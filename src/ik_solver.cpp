@@ -1,21 +1,29 @@
 #include "rclcpp/rclcpp.hpp"
-#include "ik_interfaces/srv/calc_ik.hpp"
-#include "opw_kinematics/opw_kinematics.h"
-#include "opw_kinematics/opw_utilities.h"
+
+#include "geometry_msgs/msg/pose.hpp"
+
+
+#include "ik_solver/opw_kinematics.h"
+#include "ik_solver/opw_parameters.h"
+#include "ik_solver/opw_utilities.h"
 #include <Eigen/Geometry>
+#include <vector>
+
+#include "ik_interfaces/srv/calc_ik.hpp"
 #include <vector>
 #include <array>
 
 class KinematicsService : public rclcpp::Node {
 public:
     KinematicsService() : Node("kinematics_service") {
+        // Lade die Kinematik-Parameter aus der YAML-Datei
         if (!loadParameters()) {
             RCLCPP_ERROR(get_logger(), "Failed to load parameters.");
             return;
         }
         kinematics_service_ = create_service<ik_interfaces::srv::CalcIK>(
             "kinematics",
-            std::bind(&KinematicsService::handleKinematicsService, this, _1, _2));
+            std::bind(&KinematicsService::handleKinematicsService, this, std::placeholders::_1, std::placeholders::_2));
     }
 
 private:
@@ -41,8 +49,34 @@ private:
 
 
         // Inverse Kinematik berechnen
+        std::cout << "OPW Parameters:" << std::endl;
+        std::cout << "a1: " << parameters_.a1 << std::endl;
+        std::cout << "a2: " << parameters_.a2 << std::endl;
+        std::cout << "b: " << parameters_.b << std::endl;
+        std::cout << "c1: " << parameters_.c1 << std::endl;
+        std::cout << "c2: " << parameters_.c2 << std::endl;
+        std::cout << "c3: " << parameters_.c3 << std::endl;
+        std::cout << "c4: " << parameters_.c4 << std::endl;
+        std::cout << "Pose:" << std::endl;
+        std::cout << "Position: x=" << pose.translation().x() 
+          << ", y=" << pose.translation().y() 
+          << ", z=" << pose.translation().z() << std::endl;
+
+        Eigen::Quaterniond quat(pose.linear());
+        std::cout << "Orientation: w=" << quat.w() 
+          << ", x=" << quat.x() 
+          << ", y=" << quat.y() 
+          << ", z=" << quat.z() << std::endl;
         opw_kinematics::Solutions<double> sols = opw_kinematics::inverse(parameters_, pose);
 
+        // Ausgeben der Lösungen auf der Konsole
+        for (const auto& solution : sols) {
+            std::cout << "Lösung: ";
+            for (const auto& joint_value : solution) {
+                std::cout << joint_value << " ";
+            }
+            std::cout << std::endl;
+        }
 
         // Harmonisieren und Gültigkeit der Lösungen prüfen
          bool hasValidSolution = false;
