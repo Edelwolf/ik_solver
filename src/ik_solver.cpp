@@ -1,3 +1,7 @@
+// colcon build --packages-select ik_solver
+// source install/setup.bash
+// ros2 run ik_solver ik_solver_node --ros-args --params-file /home/flehm/ros2_ws/src/ik_solver/src/robo_params.yaml
+
 #include "rclcpp/rclcpp.hpp"
 
 #include "geometry_msgs/msg/pose.hpp"
