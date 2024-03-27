@@ -32,6 +32,16 @@ public:
 
 private:
     // Hypothetische Gelenkgrenzen
+    // {-3.14, 3.14}: Diese Grenzen sind für Gelenke gesetzt, die eine volle Drehung von 360 Grad 
+    // (oder 2π Radianten) ausführen können. Der Wert -3.14 entspricht etwa -180 Grad (vollständige Drehung nach links), 
+    // und 3.14 entspricht etwa 180 Grad (vollständige Drehung nach rechts). Diese Grenzen sind typisch für Gelenke, 
+    // die eine freie Rotation um ihre Achse ermöglichen.
+
+    // {-1.57, 1.57}: Diese Grenzen stellen eine Drehung von ±90 Grad dar, 
+    // wobei -1.57 Radianten etwa -90 Grad und 1.57 Radianten etwa 90 Grad entsprechen. 
+    // Solche Grenzen könnten für Gelenke gelten, die nur eine begrenzte Bewegungsfreiheit haben, 
+    // wie zum Beispiel das Beugen oder Strecken in einem bestimmten Bereich.
+    
     std::array<std::pair<double, double>, 6> joint_limits_ = {{
         {-3.14, 3.14}, {-1.57, 1.57}, {-3.14, 3.14},
         {-3.14, 3.14}, {-1.57, 1.57}, {-3.14, 3.14}
